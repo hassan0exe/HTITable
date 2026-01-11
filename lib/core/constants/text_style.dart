@@ -1,5 +1,5 @@
  
-    library text_style;
+    library;
     import 'package:flutter/material.dart';
     // 
     mixin Font implements FontWeight  {

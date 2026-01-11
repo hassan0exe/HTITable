@@ -1,5 +1,5 @@
  
-    library app_colors;
+    library;
     import 'package:flutter/material.dart';
     class AppColor {
 

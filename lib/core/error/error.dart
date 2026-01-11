@@ -1,4 +1,4 @@
-library error;
+library;
     class RouteException implements Exception {
   final String message;
 

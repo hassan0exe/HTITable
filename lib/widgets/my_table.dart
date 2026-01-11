@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:table/bloc/course_cubit.dart';
+import 'package:table/core/constants/days.dart';
 import 'package:table/widgets/coustome_row.dart';
 
 class MyTable extends StatelessWidget {
-  const MyTable({super.key});
+  final CoursesCubit cubit;
+  const MyTable({super.key , required this.cubit});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +20,9 @@ class MyTable extends StatelessWidget {
           data: List.generate(8, (index) => "${index + 1}"),
           backgroundColor: Colors.blue[50],
           headBackgroundColor: Colors.blue[50],
-          fontSize:7.sp,
+          headFontSize:7.sp,
+          dataFontSize:8.sp,
+          cubit: cubit
         ),
 
         // Second row - Times
@@ -33,14 +38,18 @@ class MyTable extends StatelessWidget {
             '1:00 - 1:45',
             '1:45 - 2:30',
           ],
-          fontSize:7.sp,
+          headFontSize:7.sp,
+          cubit: cubit,
+          dataFontSize:6.sp,
+
         ),
 
         // Weekdays rows
         ...coustomeRow(
-          heads: ['السبت', 'الأحد', 'الاثنين', 'الثلاثاء'],
+          heads: Days.days,
           headBackgroundColor: Colors.blue[100],
-          fontSize:7.sp,
+          headFontSize:7.sp,
+          cubit: cubit
         ),
       ],
     );

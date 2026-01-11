@@ -1,22 +1,21 @@
 // models/course.dart
 import 'package:equatable/equatable.dart';
+import 'package:table/data/entity/course.dart';
 
-class Course extends Equatable {
+class CourseDuration extends Equatable {
   final int id;
-  final String name;
+  final Course course;
   final int startTime;
   final int endTime;
   final int extraTime;
-  final double units;
-  final Day day;
-  final Course? section;
+  final String day;
+  final CourseDuration? section;
 
-  const Course({
+  const CourseDuration({
     required this.id,
-    required this.name,
+    required this.course,
     required this.startTime,
     required this.endTime,
-    required this.units,
     required this.day,
     this.section,
     this.extraTime = -1,
@@ -25,41 +24,33 @@ class Course extends Equatable {
   @override
   List<Object?> get props => [
         id,
-        name,
+        course,
         startTime,
         endTime,
         extraTime,
-        units,
         day,
         section,
       ];
 
-  Course copyWith({
+  CourseDuration copyWith({
     int? id,
-    String? name,
+    Course? course,
     int? startTime,
     int? endTime,
     int? extraTime,
     double? units,
-    Day? day,
-    Course? section,
+    String? day,
+    CourseDuration? section,
   }) {
-    return Course(
+    return CourseDuration(
       id: id ?? this.id,
-      name: name ?? this.name,
+      course: course ?? this.course,
       startTime: startTime ?? this.startTime,
       endTime: endTime ?? this.endTime,
       extraTime: extraTime ?? this.extraTime,
-      units: units ?? this.units,
       day: day ?? this.day,
       section: section ?? this.section,
     );
   }
 }
 
-enum Day {
-  saturday,
-  sunday,
-  monday,
-  tuesday,
-}
