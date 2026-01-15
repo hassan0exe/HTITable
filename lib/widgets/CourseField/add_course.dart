@@ -62,7 +62,6 @@ void addCourse({
         section: null
       ) : null,
     );
-    print(fieldedDuration);
     // Add the course
     cubit.addCourse(fieldedDuration);
 

@@ -28,21 +28,25 @@ class CourseField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
- 
     return BlocBuilder<CourseFormBloc, CourseFormState>(
       builder: (context, state) {
-           // Create controllers here
-    final TextEditingController startTimeController = TextEditingController(
-      text: "${bloc.state.lecture.start}",
-    );
-    final TextEditingController endTimeController = TextEditingController(
-      text: "${bloc.state.lecture.end}");
-    final TextEditingController startSectionTimeController = TextEditingController(
-      text: "${bloc.state.lecture.section != null? bloc.state.lecture.section!.start : ""}",
-    );
-    final TextEditingController endSectionTimeController = TextEditingController(
-      text: "${bloc.state.lecture.section != null? bloc.state.lecture.section!.end : ""}",
-    );
+        // Create controllers here
+        final TextEditingController startTimeController = TextEditingController(
+          text: "${bloc.state.lecture.start}",
+        );
+        final TextEditingController endTimeController = TextEditingController(
+          text: "${bloc.state.lecture.end}",
+        );
+        final TextEditingController
+        startSectionTimeController = TextEditingController(
+          text:
+              "${bloc.state.lecture.section != null ? bloc.state.lecture.section!.start : ""}",
+        );
+        final TextEditingController
+        endSectionTimeController = TextEditingController(
+          text:
+              "${bloc.state.lecture.section != null ? bloc.state.lecture.section!.end : ""}",
+        );
         return Card(
           margin: const EdgeInsets.all(16),
           elevation: 4,
@@ -51,17 +55,26 @@ class CourseField extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
-                //top left trash icon button 
+                //top left trash icon button
                 Align(
                   alignment: Alignment.topLeft,
-                  child: IconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed: () {
-                        cubit.removeSelectedCourse(bloc.state.lecture.course);
-                        // Handle case where there's no parent, maybe clear the form or show a message
-                        bloc.add(ResetFormEvent());
-                    },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Total units : ${
+                        //each course contains units sum this uNavigatorState
+                        cubit.state.courses.fold<int>(0, (sum, course) => sum + course.course.units)}",
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.delete),
+                        onPressed: () {
+                          cubit.removeSelectedCourse(bloc.state.lecture.course);
+                          // Handle case where there's no parent, maybe clear the form or show a message
+                          bloc.add(ResetFormEvent());
+                        },
+                      ),
+                    ],
                   ),
                 ),
                 // SearchableTextField - use value from bloc bloc.state
@@ -127,7 +140,7 @@ class CourseField extends StatelessWidget {
                             .toList(),
                         onChanged: (String? newValue) {
                           if (newValue != null) {
-                            bloc.add(ChangeDayEvent(newValue , false));
+                            bloc.add(ChangeDayEvent(newValue, false));
                           }
                         },
                       ),
@@ -139,7 +152,11 @@ class CourseField extends StatelessWidget {
                 const SizedBox(height: 16),
 
                 if (bloc.state.hasSection)
-                  SectionFormField(startSectionTimeController: startSectionTimeController, bloc: bloc, endSectionTimeController: endSectionTimeController),
+                  SectionFormField(
+                    startSectionTimeController: startSectionTimeController,
+                    bloc: bloc,
+                    endSectionTimeController: endSectionTimeController,
+                  ),
 
                 const SizedBox(height: 16),
 
@@ -155,10 +172,9 @@ class CourseField extends StatelessWidget {
                       sectionDay: bloc.state.lecture.section!.day,
                       sectionEndTimeController: endSectionTimeController,
                       sectionStartTimeController: startSectionTimeController,
-                      hasSection: bloc.state.hasSection
+                      hasSection: bloc.state.hasSection,
                     );
                     bloc.add(ResetFormEvent());
-            
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blueAccent,
