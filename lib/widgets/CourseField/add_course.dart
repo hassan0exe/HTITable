@@ -1,64 +1,84 @@
-// In your add_course.dart file
 import 'package:flutter/material.dart';
-import 'package:table/bloc/course_cubit.dart';
+import 'package:table/bloc/tableCubit/course_cubit.dart';
+import 'package:table/core/constants/days.dart';
 import 'package:table/data/departments/electrical.dart';
 import 'package:table/entity/course_duration.dart';
 import 'package:table/widgets/CourseField/check_time.dart';
 
-void addCourse(BuildContext context, CoursesCubit cubit,
-    TextEditingController courseNameController,
-    TextEditingController startTimeController,
-    TextEditingController endTimeController,
-    String day,
-    bool isSection,
-) {
-    try {
-      String name = courseNameController.text;
-      int startTime = int.parse(startTimeController.text);
-      int endTime = endTimeController.text.isNotEmpty
-          ? int.parse(endTimeController.text)
-          : 9;
+void addCourse({
+  required BuildContext context,
+  required CoursesCubit cubit,
+  required String courseName,
+  required TextEditingController startTimeController,
+  required String day,
+  required TextEditingController endTimeController,
+  required bool hasSection,
+  TextEditingController? sectionStartTimeController,
+  TextEditingController? sectionEndTimeController,
+  String? sectionDay,
 
-      if (name.isEmpty) {
-        throw Exception("اسم المادة مطلوب");
-      }
-      
-      // Find the course
-      final courseField = Electrical(
-        isArabic: true,
-      ).allCoursesList.firstWhere((element) => element.name == name);
+}) {
+  try {
+    int startTime = int.parse(startTimeController.text);
+    int endTime = endTimeController.text.isNotEmpty
+        ? int.parse(endTimeController.text)
+        : -1;
+    int sectionStartTime = sectionStartTimeController != null ? int.parse(sectionStartTimeController.text) : 0;
+    int sectionEndTime = sectionEndTimeController != null ?  sectionEndTimeController.text.isNotEmpty
+        ? int.parse(sectionEndTimeController.text)
+        : -1 : 0;
 
-      // Create the course duration
-      final fieldedDuration = CourseDuration (
+    if (courseName.isEmpty) {
+      throw Exception("اسم المادة مطلوب");
+    }
+
+    // Validate that end time is not less than start time
+    if (endTime != -1 && endTime < startTime) {
+      throw Exception("وقت الانتهاء يجب أن يكون بعد وقت البدء");
+    }
+
+    // Find the course
+    final courseField = Electrical(
+      isArabic: true,
+    ).allCoursesList.firstWhere((element) => element.name == courseName);
+
+    // Create the course duration with proper end time
+    // If endTime is -1 or equals startTime, it's a single slot course
+    final fieldedDuration = CourseDuration(
+      id: cubit.state.courses.length + 1,
+      course: courseField,
+      start: checkTime(startTime),
+      // For single slot courses, end should equal start
+      end: endTime == -1 || endTime == startTime
+          ? checkTime(startTime)
+          : checkTime(endTime),
+      day: day,
+      section:hasSection ? CourseDuration(
         id: cubit.state.courses.length + 1,
         course: courseField,
-        startTime: checkTime(startTime),
-        endTime: startTime == endTime ? 9 : checkTime(endTime),
-        day: day,
-      );
+        start: sectionStartTime,
+        end: sectionEndTime,
+        day: sectionDay ?? Days.saturday,
+        section: null
+      ) : null,
+    );
+    print(fieldedDuration);
+    // Add the course
+    cubit.addCourse(fieldedDuration);
 
-      // Add the course - this should also set it as selectedCourse
-      cubit.addCourse(fieldedDuration);
-      
-      // Show success message
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('تمت إضافة المادة بنجاح'),
-          duration: const Duration(seconds: 2),
-        ),
-      );
-
-      // Clear the form
-      courseNameController.clear();
-      startTimeController.clear();
-      endTimeController.clear();
-      
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("برجاء ادخال كامل البيانات: $e"),
-          duration: const Duration(seconds: 2),
-        ),
-      );
-    }
+    // Show success message
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text('تمت إضافة المادة بنجاح'),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text("Error: $e"),
+        duration: const Duration(seconds: 2),
+      ),
+    );
   }
+}

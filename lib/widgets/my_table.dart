@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:table/bloc/course_cubit.dart';
+import 'package:table/bloc/courseField/course_bloc.dart';
+import 'package:table/bloc/tableCubit/course_cubit.dart';
 import 'package:table/core/constants/days.dart';
 import 'package:table/widgets/coustome_row.dart';
 
 class MyTable extends StatelessWidget {
   final CoursesCubit cubit;
-  const MyTable({super.key , required this.cubit});
+  final CourseFormBloc bloc;
+  const MyTable({super.key , required this.cubit , required this.bloc});
 
   @override
   Widget build(BuildContext context) {
@@ -17,12 +19,13 @@ class MyTable extends StatelessWidget {
         // First row - Periods
         ...coustomeRow(
           heads: ["الفترات"],
-          data: List.generate(8, (index) => "${index + 1}"),
+          data: List.generate(10, (index) => "${index + 1}"),
           backgroundColor: Colors.blue[50],
           headBackgroundColor: Colors.blue[50],
           headFontSize:7.sp,
           dataFontSize:8.sp,
-          cubit: cubit
+          cubit: cubit,
+          bloc: bloc
         ),
 
         // Second row - Times
@@ -41,7 +44,7 @@ class MyTable extends StatelessWidget {
           headFontSize:7.sp,
           cubit: cubit,
           dataFontSize:6.sp,
-
+          bloc: bloc
         ),
 
         // Weekdays rows
@@ -49,7 +52,8 @@ class MyTable extends StatelessWidget {
           heads: Days.days,
           headBackgroundColor: Colors.blue[100],
           headFontSize:7.sp,
-          cubit: cubit
+          cubit: cubit,
+          bloc: bloc
         ),
       ],
     );

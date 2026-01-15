@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:table/bloc/course_cubit.dart';
-import 'package:table/bloc/course_state.dart';
+import 'package:table/bloc/courseField/course_bloc.dart';
+import 'package:table/bloc/tableCubit/course_cubit.dart';
+import 'package:table/bloc/tableCubit/course_cubit_state.dart';
 import 'package:table/widgets/CourseField/course_field.dart';
 import 'package:table/widgets/my_table.dart';
 
@@ -11,6 +12,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
       final CoursesCubit cubit = BlocProvider.of<CoursesCubit>(context);
+      final CourseFormBloc bloc = BlocProvider.of<CourseFormBloc>(context);
 
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -26,9 +28,9 @@ class HomeScreen extends StatelessWidget {
               return Column(
                 children: [
                   // Card with 4 text fields
-                  CourseField(cubit : cubit),
+                  CourseField(cubit : cubit , bloc: bloc,),
 
-                  Container(margin: EdgeInsets.all(8), child: MyTable(cubit: cubit,)),
+                  Container(margin: EdgeInsets.all(8), child: MyTable(cubit: cubit,bloc : bloc)),
 
                   const SizedBox(height: 32),
                 ],

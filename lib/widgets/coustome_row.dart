@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:table/bloc/course_cubit.dart';
+import 'package:table/bloc/courseField/course_bloc.dart';
+import 'package:table/bloc/courseField/course_event.dart';
+import 'package:table/bloc/tableCubit/course_cubit.dart';
 import 'package:table/entity/course_duration.dart';
 List<TableRow> coustomeRow({
   required List<String> heads,
   required CoursesCubit cubit,
+  required CourseFormBloc bloc,
   Color? headBackgroundColor,
   Color? backgroundColor,
   List<String>? data,
@@ -47,28 +50,51 @@ List<TableRow> coustomeRow({
           ),
         ),
         // Data cells
-        ...List.generate(8, (index) {
+        ...List.generate(10, (index) {
           return TableCell(
-            child: SizedBox(
-              height: dataCellHeight,
-              child: Center(
-                child: Text(
-                  data != null && index < data.length
-                      ? data[index]
-                      : stackCourses(courses, index + 1, head),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: dataFontSize,
-                    fontWeight: FontWeight.bold,
+            child: InkWell(
+              child: SizedBox(
+                height: dataCellHeight,
+                child: Center(
+                  child: Text(
+                    data != null && index < data.length
+                        ? data[index]
+                        : stackCourses(courses, index + 1, head),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: dataFontSize,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
+              onTap: ()=>selectCourse(courses: courses, currentIndex: index+1, head: head, bloc: bloc),
             ),
           );
         }),
       ],
     );
   }).toList();
+}
+
+void selectCourse({
+  required List<CourseDuration> courses,
+  required int currentIndex,
+  required String head,
+  required CourseFormBloc bloc,
+}) {
+  for (CourseDuration courseDuration in courses) {
+    if (courseDuration.day == head &&
+        courseDuration.start <= currentIndex &&
+        courseDuration.end >= currentIndex) {
+      
+      bloc.add(AddFormEvent(
+        addFormState: bloc.state.copyWith(
+        lec: courseDuration,
+      )));
+      return;
+    }
+  }
 }
 
 String stackCourses(
@@ -81,18 +107,17 @@ String stackCourses(
   for (CourseDuration courseDuration in courses) {
     // Check main course
     if (courseDuration.day == head &&
-        courseDuration.startTime <= currentIndex &&
-        courseDuration.endTime >= currentIndex) {
+        courseDuration.start <= currentIndex &&
+        courseDuration.end >= currentIndex || courseDuration.end == 0) {
       String name = courseDuration.course.name;
       if (name.length > 15) name = "${name.substring(0, 12)}...";
       items.add(name);
     }
-    
     // Check section
     if (courseDuration.section != null &&
         courseDuration.section!.day == head &&
-        courseDuration.section!.startTime <= currentIndex &&
-        courseDuration.section!.endTime >= currentIndex) {
+        courseDuration.section!.start <= currentIndex &&
+        courseDuration.section!.end >= currentIndex) {
       String name = courseDuration.section!.course.name;
       if (name.length > 13) name = "${name.substring(0, 10)}...";
       items.add("سكشن $name");

@@ -5,8 +5,8 @@ import 'package:table/data/entity/course.dart';
 class CourseDuration extends Equatable {
   final int id;
   final Course course;
-  final int startTime;
-  final int endTime;
+  final int start;
+  final int end;
   final int extraTime;
   final String day;
   final CourseDuration? section;
@@ -14,10 +14,10 @@ class CourseDuration extends Equatable {
   const CourseDuration({
     required this.id,
     required this.course,
-    required this.startTime,
-    required this.endTime,
+    required this.start,
+    required this.end,
     required this.day,
-    this.section,
+    required this.section,
     this.extraTime = -1,
   });
 
@@ -25,8 +25,8 @@ class CourseDuration extends Equatable {
   List<Object?> get props => [
         id,
         course,
-        startTime,
-        endTime,
+        start,
+        end,
         extraTime,
         day,
         section,
@@ -35,8 +35,8 @@ class CourseDuration extends Equatable {
   CourseDuration copyWith({
     int? id,
     Course? course,
-    int? startTime,
-    int? endTime,
+    int? start,
+    int? end,
     int? extraTime,
     double? units,
     String? day,
@@ -45,8 +45,8 @@ class CourseDuration extends Equatable {
     return CourseDuration(
       id: id ?? this.id,
       course: course ?? this.course,
-      startTime: startTime ?? this.startTime,
-      endTime: endTime ?? this.endTime,
+      start: start ?? this.start,
+      end: end ?? this.end,
       extraTime: extraTime ?? this.extraTime,
       day: day ?? this.day,
       section: section ?? this.section,

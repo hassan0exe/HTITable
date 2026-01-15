@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:table/bloc/courseField/course_bloc.dart';
+import 'package:table/bloc/courseField/course_event.dart';
 import 'package:table/data/entity/course_model.dart';
 import 'package:table/core/localization/localization.dart';
 
 class SearchableTextField extends StatefulWidget {
   final String labelText;
   final List<CourseModel> searchList;
-  final ValueChanged<CourseModel>? onSelected;
-  final TextEditingController? controller;
   final bool showEnglish; // To control whether to show English names
-
+  final CourseFormBloc bloc;
   const SearchableTextField({
     super.key,
     required this.labelText,
     required this.searchList,
-    this.onSelected,
-    this.controller,
+    required this.bloc,
+    
     this.showEnglish = false, // Default to Arabic
   });
 
@@ -30,9 +30,6 @@ class _SearchableTextFieldState extends State<SearchableTextField> {
   void initState() {
     super.initState();
     // If an external controller is provided, sync with search controller
-    if (widget.controller != null) {
-      _searchController.text = widget.controller!.text;
-    }
   }
 
   @override
@@ -57,7 +54,8 @@ class _SearchableTextFieldState extends State<SearchableTextField> {
       viewSurfaceTintColor: Colors.transparent,
       builder: (BuildContext context, SearchController controller) {
         return TextFormField(
-          controller: controller,
+          controller:TextEditingController(
+                    text: widget.bloc.state.lecture.course.name),
           focusNode: _focusNode,
           textDirection: _containsArabic(controller.text) 
               ? TextDirection.rtl 
@@ -83,7 +81,7 @@ class _SearchableTextFieldState extends State<SearchableTextField> {
         
         if (query.isEmpty) {
           return widget.searchList.map((item) {
-            return _buildCourseTile(item);
+            return _buildCourseTile(item , widget.bloc);
           }).toList();
         }
 
@@ -100,13 +98,13 @@ class _SearchableTextFieldState extends State<SearchableTextField> {
         }).toList();
 
         return filteredList.map((item) {
-          return _buildCourseTile(item);
+          return _buildCourseTile(item , widget.bloc);
         }).toList();
       },
     );
   }
 
-  Widget _buildCourseTile(CourseModel item) {
+  Widget _buildCourseTile(CourseModel item , CourseFormBloc bloc) {
     // Get both Arabic and English names
     final arabicName = Localization.getCourseName(true, item.id);
     final englishName = Localization.getCourseName(false, item.id);
@@ -165,13 +163,8 @@ class _SearchableTextFieldState extends State<SearchableTextField> {
             ? Localization.getCourseName(false, item.id) 
             : Localization.getCourseName(true, item.id));
         _focusNode.unfocus();
-        widget.onSelected?.call(item);
+        bloc.add(SelectCourseName(item));
         // Update external controller if provided
-        if (widget.controller != null) {
-          widget.controller!.text = widget.showEnglish 
-              ? Localization.getCourseName(false, item.id) 
-              : Localization.getCourseName(true, item.id);
-        }
       },
     );
   }
