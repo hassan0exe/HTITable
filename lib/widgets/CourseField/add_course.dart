@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:table/bloc/tableCubit/course_cubit.dart';
 import 'package:table/core/constants/days.dart';
 import 'package:table/data/departments/electrical.dart';
-import 'package:table/entity/course_duration.dart';
+import 'package:table/entity/course_duration_model.dart';
 import 'package:table/widgets/CourseField/check_time.dart';
 
 void addCourse({
@@ -44,7 +44,7 @@ void addCourse({
 
     // Create the course duration with proper end time
     // If endTime is -1 or equals startTime, it's a single slot course
-    final fieldedDuration = CourseDuration(
+    final fieldedDuration = CourseDurationModel(
       id: cubit.state.courses.length + 1,
       course: courseField,
       start: checkTime(startTime),
@@ -53,7 +53,7 @@ void addCourse({
           ? checkTime(startTime)
           : checkTime(endTime),
       day: day,
-      section:hasSection ? CourseDuration(
+      section:hasSection ? CourseDurationModel(
         id: cubit.state.courses.length + 1,
         course: courseField,
         start: sectionStartTime,

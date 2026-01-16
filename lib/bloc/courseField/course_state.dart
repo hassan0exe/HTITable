@@ -2,12 +2,12 @@
 
 import 'package:equatable/equatable.dart';
 import 'package:table/core/constants/days.dart';
-import 'package:table/data/entity/course.dart';
-import 'package:table/entity/course_duration.dart';
+import 'package:table/data/entity/course_model.dart';
+import 'package:table/entity/course_duration_model.dart';
 
 class CourseFormState extends Equatable {
   final int id;
-  final CourseDuration lecture;
+  final CourseDurationModel lecture;
   final bool hasSection;
 
   const CourseFormState({
@@ -19,12 +19,12 @@ class CourseFormState extends Equatable {
   factory CourseFormState.initial() {
     return CourseFormState(
       id: -2,
-      lecture: CourseDuration(
+      lecture: CourseDurationModel(
         id: -2,
         day: Days.saturday,
         start: 0,
         end: 0,
-        course: Course(name: "", id: "", units: 0, departmentCode: ""),
+        course: CourseModel(name: "", id: "", units: 0, departmentCode: ""),
         section:null,
       ),
 
@@ -34,12 +34,12 @@ class CourseFormState extends Equatable {
 
   CourseFormState copyWith({
     int? id,
-    CourseDuration? lec,
+    CourseDurationModel? lec,
     bool? hasSection,
     String? day,
     int? start,
     int? end,
-    Course? course,
+    CourseModel? course,
     int? sectionStart,
     int? sectionEnd,
     String? sectionDay,
@@ -52,7 +52,7 @@ class CourseFormState extends Equatable {
         start: start ?? lecture.start,
         end: end ?? lecture.end,
         course: course ?? lecture.course,
-        section: CourseDuration(
+        section: CourseDurationModel(
         id: id ?? this.id,
         day: sectionDay ?? (lecture.section != null ? lecture.section!.day  : Days.saturday) ,
         start: sectionStart ?? (lecture.section != null ? lecture.section!.start : 0),

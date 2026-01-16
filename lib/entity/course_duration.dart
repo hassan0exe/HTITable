@@ -1,15 +1,16 @@
 // models/course.dart
 import 'package:equatable/equatable.dart';
-import 'package:table/data/entity/course.dart';
+import 'package:table/data/entity/course_model.dart';
+import 'package:table/entity/course_duration_model.dart';
 
 class CourseDuration extends Equatable {
   final int id;
-  final Course course;
+  final CourseModel course;
   final int start;
   final int end;
   final int extraTime;
   final String day;
-  final CourseDuration? section;
+  final CourseDurationModel? section;
 
   const CourseDuration({
     required this.id,
@@ -32,25 +33,6 @@ class CourseDuration extends Equatable {
         section,
       ];
 
-  CourseDuration copyWith({
-    int? id,
-    Course? course,
-    int? start,
-    int? end,
-    int? extraTime,
-    double? units,
-    String? day,
-    CourseDuration? section,
-  }) {
-    return CourseDuration(
-      id: id ?? this.id,
-      course: course ?? this.course,
-      start: start ?? this.start,
-      end: end ?? this.end,
-      extraTime: extraTime ?? this.extraTime,
-      day: day ?? this.day,
-      section: section ?? this.section,
-    );
-  }
+
 }
 

@@ -1,9 +1,9 @@
 // cubit/courses_state.dart
 import 'package:equatable/equatable.dart';
-import 'package:table/entity/course_duration.dart';
+import 'package:table/entity/course_duration_model.dart';
 
 class CoursesState extends Equatable {
-  final List<CourseDuration> courses;
+  final List<CourseDurationModel> courses;
   const CoursesState({required this.courses});
 
   @override
@@ -11,5 +11,5 @@ class CoursesState extends Equatable {
 }
 
 class CoursesInitState extends CoursesState {
-  const CoursesInitState({super.courses = const []});
+  const CoursesInitState({required super.courses});
 }

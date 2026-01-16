@@ -3,6 +3,7 @@ import 'package:table/bloc/courseField/course_bloc.dart';
 import 'package:table/bloc/courseField/course_event.dart';
 import 'package:table/bloc/tableCubit/course_cubit.dart';
 import 'package:table/entity/course_duration.dart';
+import 'package:table/entity/course_duration_model.dart';
 List<TableRow> coustomeRow({
   required List<String> heads,
   required CoursesCubit cubit,
@@ -17,7 +18,7 @@ List<TableRow> coustomeRow({
 }) {
   return heads.map((head) {
     // Get all courses that have either main lecture OR section on this day
-    List<CourseDuration> courses = cubit.state.courses.where((element) {
+    List<CourseDurationModel> courses = cubit.state.courses.where((element) {
       return element.day == head || 
              (element.section != null && element.section!.day == head);
     }).toList();
@@ -78,12 +79,12 @@ List<TableRow> coustomeRow({
 }
 
 void selectCourse({
-  required List<CourseDuration> courses,
+  required List<CourseDurationModel> courses,
   required int currentIndex,
   required String head,
   required CourseFormBloc bloc,
 }) {
-  for (CourseDuration courseDuration in courses) {
+  for (CourseDurationModel courseDuration in courses) {
     if (courseDuration.day == head &&
         courseDuration.start <= currentIndex &&
         courseDuration.end >= currentIndex) {
@@ -95,6 +96,8 @@ void selectCourse({
       return;
     }
   }
+        bloc.add(ResetFormEvent());
+
 }
 
 String stackCourses(
@@ -109,18 +112,18 @@ String stackCourses(
     if (courseDuration.day == head &&
         courseDuration.start <= currentIndex &&
         courseDuration.end >= currentIndex || courseDuration.end == 0) {
-      String name = courseDuration.course.name;
-      if (name.length > 15) name = "${name.substring(0, 12)}...";
-      items.add(name);
+      // String name = courseDuration.course.name;
+      // if (name.length > 15) name = "${name.substring(0, 12)}...";
+      items.add(courseDuration.course.id);
     }
     // Check section
     if (courseDuration.section != null &&
         courseDuration.section!.day == head &&
         courseDuration.section!.start <= currentIndex &&
         courseDuration.section!.end >= currentIndex) {
-      String name = courseDuration.section!.course.name;
-      if (name.length > 13) name = "${name.substring(0, 10)}...";
-      items.add("سكشن $name");
+      // String name = courseDuration.section!.course.name;
+      // if (name.length > 13) name = "${name.substring(0, 10)}...";
+      items.add("سكشن ${courseDuration.section!.course.id}");
     }
   }
   

@@ -2,7 +2,7 @@
 // course_form_event.dart
 import 'package:equatable/equatable.dart';
 import 'package:table/bloc/courseField/course_state.dart';
-import 'package:table/data/entity/course.dart';
+import 'package:table/data/entity/course_model.dart';
 
 abstract class CourseFormEvent extends Equatable {
   const CourseFormEvent();
@@ -32,10 +32,25 @@ class ChangeTimeEvent extends CourseFormEvent {
     this.sectionStart,
     this.sectionEnd,
   });
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [
+    start ?? 0,
+    end ?? 0,
+    sectionStart ?? 0,
+    sectionEnd ?? 0,
+  ];
+
+  @override
+  String toString() {
+    return 'ChangeTimeEvent(start: $start, end: $end, sectionStart: $sectionStart, sectionEnd: $sectionEnd)';
+  }
+  
 }
 
 class SelectCourseName extends CourseFormEvent {
-  final Course course;
+  final CourseModel course;
 
   const SelectCourseName(this.course);
 
@@ -47,10 +62,10 @@ class ChangeDayEvent extends CourseFormEvent {
   final String newDay;
   final bool sectionDay;
 
-  const ChangeDayEvent(this.newDay , this.sectionDay);
+  const ChangeDayEvent(this.newDay, this.sectionDay);
 
   @override
-  List<Object> get props => [newDay , sectionDay];
+  List<Object> get props => [newDay, sectionDay];
 }
 
 class AddFormEvent extends CourseFormEvent {

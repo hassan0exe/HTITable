@@ -22,7 +22,7 @@ class MyTable extends StatelessWidget {
           data: List.generate(10, (index) => "${index + 1}"),
           backgroundColor: Colors.blue[50],
           headBackgroundColor: Colors.blue[50],
-          headFontSize:6.sp,
+          headFontSize:5.sp,
           dataFontSize:8.sp,
           cubit: cubit,
           bloc: bloc
@@ -40,8 +40,10 @@ class MyTable extends StatelessWidget {
             '12:05 - 12:50',
             '1:00 - 1:45',
             '1:45 - 2:30',
+            '2:40 - 3:25',
+            '3:25 - 4:10',
           ],
-          headFontSize:6.sp,
+          headFontSize:5.sp,
           cubit: cubit,
           dataFontSize:5.sp,
           bloc: bloc
@@ -51,7 +53,7 @@ class MyTable extends StatelessWidget {
         ...coustomeRow(
           heads: Days.days,
           headBackgroundColor: Colors.blue[100],
-          headFontSize:6.sp,
+          headFontSize:5.sp,
           cubit: cubit,
           bloc: bloc
         ),
