@@ -44,7 +44,15 @@ class CoursesCubit extends Cubit<CoursesState> {
 
   void removeAllSelectedCourse() {
     emit(CoursesState(courses: []));
-  }
+    Store.removeCourses().then((value) {
+      if (value) {
+        print("all cleared");
+      } else {
+        print("error clearing the memory");
+      }
+    });
+    
+      }
 
   void removeSelectedCourse(Course course) {
     List<CourseDurationModel> updatedCourses = List<CourseDurationModel>.from(

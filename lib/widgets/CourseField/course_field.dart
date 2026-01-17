@@ -73,6 +73,10 @@ class CourseField extends StatelessWidget {
                           // Handle case where there's no parent, maybe clear the form or show a message
                           bloc.add(ResetFormEvent());
                         },
+                        onLongPress: () {
+                          cubit.removeAllSelectedCourse();
+                          bloc.add(ResetFormEvent());
+                        },
                       ),
                     ],
                   ),

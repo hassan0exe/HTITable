@@ -49,7 +49,10 @@ class Store {
   static Future<bool> removeCourses() async {
     try {
       final prefs = await SharedPreferences.getInstance();
+      await prefs.remove("courses");
+      await prefs.reload();
       return await prefs.remove("courses");
+
     } catch (e) {
       print('Error removing courses: $e');
       return false;
