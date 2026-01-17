@@ -66,17 +66,22 @@ class CourseField extends StatelessWidget {
                         //each course contains units sum this uNavigatorState
                         cubit.state.courses.fold<int>(0, (sum, course) => sum + course.course.units)}",
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.delete),
-                        onPressed: () {
-                          cubit.removeSelectedCourse(bloc.state.lecture.course);
-                          // Handle case where there's no parent, maybe clear the form or show a message
-                          bloc.add(ResetFormEvent());
-                        },
-                        onLongPress: () {
-                          cubit.removeAllSelectedCourse();
-                          bloc.add(ResetFormEvent());
-                        },
+                      Row(
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.delete),
+                            tooltip: "(ضغطة مطولة لحذف الجدول بالكامل)",
+                            onPressed: () {
+                              cubit.removeSelectedCourse(bloc.state.lecture.course);
+                              // Handle case where there's no parent, maybe clear the form or show a message
+                              bloc.add(ResetFormEvent());
+                            },
+                            onLongPress: () {
+                              cubit.removeAllSelectedCourse();
+                              bloc.add(ResetFormEvent());
+                            },
+                          ),
+                        ],
                       ),
                     ],
                   ),
