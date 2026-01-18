@@ -7,6 +7,7 @@ import 'package:table/bloc/tableCubit/course_cubit_state.dart';
 import 'package:table/widgets/CourseField/course_field.dart';
 import 'package:table/widgets/lang_check_box.dart';
 import 'package:table/widgets/my_table.dart';
+import 'package:table/widgets/print_button.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -21,7 +22,16 @@ class HomeScreen extends StatelessWidget {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("انشاء الجداول"),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text("انشاء الجداول"),
+
+              //icon button with circle white background for print
+              PrintButton(cubit: cubit) 
+              
+            ],
+          ),
           backgroundColor: Colors.blueAccent,
         ),
         body: SingleChildScrollView(
@@ -38,14 +48,18 @@ class HomeScreen extends StatelessWidget {
                         children: [
                           LangCheckBox(lang: lang),
                           Container(
-                    margin: EdgeInsets.all(8),
-                    child: MyTable(cubit: cubit, bloc: bloc, lang: lang),
-                  ),
+                            margin: EdgeInsets.all(8),
+                            child: MyTable(
+                              cubit: cubit,
+                              bloc: bloc,
+                              lang: lang,
+                            ),
+                          ),
                         ],
                       );
                     },
                   ),
-                  
+
                   const SizedBox(height: 32),
                 ],
               );

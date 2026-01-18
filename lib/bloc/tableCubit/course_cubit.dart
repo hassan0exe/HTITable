@@ -1,4 +1,6 @@
 // cubit/courses_cubit.dart
+import 'dart:convert';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:table/bloc/tableCubit/course_cubit_state.dart';
 import 'package:table/data/entity/course.dart';
@@ -18,6 +20,24 @@ class CoursesCubit extends Cubit<CoursesState> {
       emit(CoursesState(courses: courses));
     } catch (e) {
       print('Error loading initial courses: $e');
+      // Emit empty state if there's an error
+      emit(CoursesState(courses: []));
+    }
+  }
+
+    // Load courses from print
+  void loadCoursesFromPrint(String text) {
+    try {
+      final decodedJson = jsonDecode(text);
+    final List<Map<String, dynamic>> jsonList = decodedJson
+          .map<Map<String, dynamic>>((e) => Map<String, dynamic>.from(e))
+          .toList();
+          final courses = jsonList
+          .map((json) => CourseDurationModel.fromJson(json))
+          .toList();
+      emit(CoursesState(courses: courses));
+    } catch (e) {
+      // print('Error loading initial courses: $e');
       // Emit empty state if there's an error
       emit(CoursesState(courses: []));
     }

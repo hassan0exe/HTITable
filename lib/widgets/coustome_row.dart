@@ -29,7 +29,7 @@ List<TableRow> coustomeRow({
     // Calculate dynamic height based on number of courses
     int totalCourseCount = courses.length;
     double dataCellHeight = totalCourseCount > 0
-        ? cellHeight * (totalCourseCount + 1) * 0.8
+        ? cellHeight * (totalCourseCount + 1) * 0.4
         : cellHeight;
     
     return TableRow(
