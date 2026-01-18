@@ -10,5 +10,7 @@ class Days {
 
   static final List<String> days = [saturday, sunday, monday, tuesday];
   
-  
+ static final String lecture = "lecture";
+ static final String section = "section";
+ static final String extra = "extra"; 
 }

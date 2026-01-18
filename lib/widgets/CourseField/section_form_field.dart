@@ -12,11 +12,15 @@ class SectionFormField extends StatelessWidget {
     required this.startSectionTimeController,
     required this.bloc,
     required this.endSectionTimeController,
+    required this.extraTimeController
+
   });
 
   final TextEditingController startSectionTimeController;
   final CourseFormBloc bloc;
   final TextEditingController endSectionTimeController;
+  final TextEditingController extraTimeController;
+
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +51,7 @@ class SectionFormField extends StatelessWidget {
                     Expanded(
                       child: CoustomeTextFormField(
                         text: LocalText.sectionStart,
-                        endTimeController: startSectionTimeController,
+                        timeController: startSectionTimeController,
                         bloc: bloc,
                       ),
                     ),
@@ -55,33 +59,70 @@ class SectionFormField extends StatelessWidget {
                     Expanded(
                       child: CoustomeTextFormField(
                         text: LocalText.sectionEnd,
-                        endTimeController: endSectionTimeController,
+                        timeController: endSectionTimeController,
+                        bloc: bloc,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: CoustomeTextFormField(
+                        text: LocalText.extra,
+                        timeController: extraTimeController,
                         bloc: bloc,
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 16),
-                DropdownButtonFormField<String>(
-                  initialValue:  bloc.state.lecture.section!.day,
-                  decoration: const InputDecoration(
-                    labelText: "يوم السكشن",
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.calendar_today),
-                  ),
-                  items: <String>[...Days.days]
-                      .map<DropdownMenuItem<String>>(
-                          (String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    if (newValue != null) {
-                      bloc.add(ChangeDayEvent(newValue , true));
-                    }
-                  },
+                Row(
+                  children: [
+                    Expanded(
+                      child: DropdownButtonFormField<String>(
+                        initialValue:  bloc.state.lecture.section!.day,
+                        decoration: const InputDecoration(
+                          labelText: "يوم السكشن",
+                          border: OutlineInputBorder(),
+                          prefixIcon: Icon(Icons.calendar_today),
+                        ),
+                        items: <String>[...Days.days]
+                            .map<DropdownMenuItem<String>>(
+                                (String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          if (newValue != null) {
+                            bloc.add(ChangeDayEvent(newValue, Days.section));
+                          }
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: DropdownButtonFormField<String>(
+                        initialValue:  bloc.state.lecture.section!.extraTimeDay,
+                        decoration: const InputDecoration(
+                          labelText: "يوم الاكسترا",
+                          border: OutlineInputBorder(),
+                          prefixIcon: Icon(Icons.calendar_today),
+                        ),
+                        items: <String>[...Days.days]
+                            .map<DropdownMenuItem<String>>(
+                                (String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          if (newValue != null) {
+                            bloc.add(ChangeDayEvent(newValue, Days.extra));
+                          }
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

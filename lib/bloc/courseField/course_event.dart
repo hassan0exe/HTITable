@@ -25,12 +25,14 @@ class ChangeTimeEvent extends CourseFormEvent {
   final int? end;
   final int? sectionStart;
   final int? sectionEnd;
-
+  final int? extra;
+  
   const ChangeTimeEvent({
     this.start,
     this.end,
     this.sectionStart,
     this.sectionEnd,
+    this.extra,
   });
 
   @override
@@ -60,12 +62,12 @@ class SelectCourseName extends CourseFormEvent {
 
 class ChangeDayEvent extends CourseFormEvent {
   final String newDay;
-  final bool sectionDay;
+  final String type;
 
-  const ChangeDayEvent(this.newDay, this.sectionDay);
+  const ChangeDayEvent(this.newDay, this.type);
 
   @override
-  List<Object> get props => [newDay, sectionDay];
+  List<Object> get props => [newDay, type];
 }
 
 class AddFormEvent extends CourseFormEvent {

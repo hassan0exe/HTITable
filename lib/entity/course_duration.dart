@@ -10,6 +10,7 @@ class CourseDuration extends Equatable {
   final int end;
   final int extraTime;
   final String day;
+  final String? extraTimeDay;
   final CourseDurationModel? section;
 
   const CourseDuration({
@@ -19,7 +20,8 @@ class CourseDuration extends Equatable {
     required this.end,
     required this.day,
     required this.section,
-    this.extraTime = -1,
+    this.extraTime = 0,
+    this.extraTimeDay,
   });
 
   @override
@@ -31,6 +33,8 @@ class CourseDuration extends Equatable {
         extraTime,
         day,
         section,
+        extraTime,
+        extraTimeDay
       ];
 
 

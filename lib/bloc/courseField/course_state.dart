@@ -42,6 +42,8 @@ class CourseFormState extends Equatable {
     CourseModel? course,
     int? sectionStart,
     int? sectionEnd,
+    int? extra,
+    String? dayExtra,
     String? sectionDay,
   }) {
     return CourseFormState(
@@ -58,6 +60,9 @@ class CourseFormState extends Equatable {
         start: sectionStart ?? (lecture.section != null ? lecture.section!.start : 0),
         end: sectionEnd ?? (lecture.section != null ? lecture.section!.end : 0),
         course: course ?? lecture.course,
+        extraTimeDay: dayExtra ?? (lecture.section != null ? lecture.section!.extraTimeDay : Days.saturday),
+        extraTime: extra ?? (lecture.section != null ? lecture.section!.extraTime : 0
+        ),
         section: null
       )
       ),

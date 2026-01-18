@@ -16,17 +16,29 @@ void addCourse({
   TextEditingController? sectionStartTimeController,
   TextEditingController? sectionEndTimeController,
   String? sectionDay,
-
+  TextEditingController? extraTimeController,
+  String? extraDay,
 }) {
   try {
     int startTime = int.parse(startTimeController.text);
     int endTime = endTimeController.text.isNotEmpty
         ? int.parse(endTimeController.text)
         : -1;
-    int sectionStartTime = sectionStartTimeController != null ? int.parse(sectionStartTimeController.text) : 0;
-    int sectionEndTime = sectionEndTimeController != null ?  sectionEndTimeController.text.isNotEmpty
-        ? int.parse(sectionEndTimeController.text)
-        : -1 : 0;
+
+    int sectionStartTime = sectionStartTimeController != null
+        ? int.parse(sectionStartTimeController.text)
+        : 0;
+    int sectionEndTime = sectionEndTimeController != null
+        ? sectionEndTimeController.text.isNotEmpty
+              ? int.parse(sectionEndTimeController.text)
+              : -1
+        : 0;
+
+    int extraTime = extraTimeController != null
+        ? extraTimeController.text.isNotEmpty
+              ? int.parse(extraTimeController.text)
+              : 0
+        : 0;
 
     if (courseName.isEmpty) {
       throw Exception("اسم المادة مطلوب");
@@ -42,6 +54,7 @@ void addCourse({
       isArabic: true,
     ).allCoursesList.firstWhere((element) => element.name == courseName);
 
+    print(extraTime);
     // Create the course duration with proper end time
     // If endTime is -1 or equals startTime, it's a single slot course
     final fieldedDuration = CourseDurationModel(
@@ -52,17 +65,24 @@ void addCourse({
       end: endTime == -1 || endTime == startTime
           ? checkTime(startTime)
           : checkTime(endTime),
+
       day: day,
-      section:hasSection ? CourseDurationModel(
-        id: cubit.state.courses.length + 1,
-        course: courseField,
-        start: sectionStartTime,
-        end: sectionEndTime,
-        day: sectionDay ?? Days.saturday,
-        section: null
-      ) : null,
+      section: hasSection
+          ? CourseDurationModel(
+              id: cubit.state.courses.length + 1,
+              course: courseField,
+              start: sectionStartTime,
+              end: sectionEndTime,
+              day: sectionDay ?? Days.saturday,
+              extraTime: extraTime,
+              extraTimeDay: extraDay ?? Days.saturday,
+              
+              section: null,
+            )
+          : null,
     );
     // Add the course
+    print(fieldedDuration);
     cubit.addCourse(fieldedDuration);
 
     // Show success message

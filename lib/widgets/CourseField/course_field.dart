@@ -47,6 +47,11 @@ class CourseField extends StatelessWidget {
           text:
               "${bloc.state.lecture.section != null ? bloc.state.lecture.section!.end : ""}",
         );
+        final TextEditingController extraTimeController = TextEditingController(
+          text:
+              "${bloc.state.lecture.section != null ? bloc.state.lecture.section!.extraTime : ""}",
+        );
+        
         return Card(
           margin: const EdgeInsets.all(16),
           elevation: 4,
@@ -100,7 +105,7 @@ class CourseField extends StatelessWidget {
                     Expanded(
                       child: CoustomeTextFormField(
                         text: LocalText.start,
-                        endTimeController: startTimeController,
+                        timeController: startTimeController,
                         bloc: bloc,
                       ),
                     ),
@@ -108,7 +113,7 @@ class CourseField extends StatelessWidget {
                     Expanded(
                       child: CoustomeTextFormField(
                         text: LocalText.end,
-                        endTimeController: endTimeController,
+                        timeController: endTimeController,
                         bloc: bloc,
                       ),
                     ),
@@ -149,7 +154,7 @@ class CourseField extends StatelessWidget {
                             .toList(),
                         onChanged: (String? newValue) {
                           if (newValue != null) {
-                            bloc.add(ChangeDayEvent(newValue, false));
+                            bloc.add(ChangeDayEvent(newValue, Days.lecture));
                           }
                         },
                       ),
@@ -165,6 +170,7 @@ class CourseField extends StatelessWidget {
                     startSectionTimeController: startSectionTimeController,
                     bloc: bloc,
                     endSectionTimeController: endSectionTimeController,
+                    extraTimeController:extraTimeController,
                   ),
 
                 const SizedBox(height: 16),
@@ -181,6 +187,8 @@ class CourseField extends StatelessWidget {
                       sectionDay: bloc.state.lecture.section!.day,
                       sectionEndTimeController: endSectionTimeController,
                       sectionStartTimeController: startSectionTimeController,
+                      extraTimeController: extraTimeController,
+                      extraDay: bloc.state.lecture.section!.extraTimeDay,
                       hasSection: bloc.state.hasSection,
                     );
                     bloc.add(ResetFormEvent());

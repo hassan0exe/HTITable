@@ -9,7 +9,8 @@ class CourseDurationModel extends CourseDuration {
     required super.end,
     required super.day,
     required super.section,
-    super.extraTime
+    super.extraTime = 0,
+    super.extraTimeDay
   });
 
 factory CourseDurationModel.fromJson(Map<String, dynamic> json) {
@@ -45,7 +46,10 @@ factory CourseDurationModel.fromJson(Map<String, dynamic> json) {
     start: json['start'] as int? ?? 0,
     end: json['end'] as int? ?? 0,
     day: json['day'] as String? ?? '',
+    extraTime: json['extraTime'] as int? ?? 0,
+    extraTimeDay: json['extraTimeDay'] as String?,
     section: section,
+
   );
 }
 
@@ -57,6 +61,8 @@ factory CourseDurationModel.fromJson(Map<String, dynamic> json) {
       'end': end,
       'day': day,
       'section': section?.toJson(),
+      'extraTime': extraTime,
+      'extraTimeDay': extraTimeDay,
     };
   }
   
@@ -67,6 +73,8 @@ CourseDurationModel copyWith({
     int? end,
     double? units,
     String? day,
+    int? extraTime,
+    String? extraTimeDay,
     CourseDurationModel? section,
   }) {
     return CourseDurationModel(
@@ -76,6 +84,8 @@ CourseDurationModel copyWith({
       end: end ?? this.end,
       day: day ?? this.day,
       section: section ?? this.section,
+      extraTime: extraTime ?? this.extraTime,
+      extraTimeDay: extraTimeDay ?? this.extraTimeDay,
     );
   }
   

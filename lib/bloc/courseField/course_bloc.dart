@@ -16,9 +16,22 @@ class CourseFormBloc extends Bloc<CourseFormEvent, CourseFormState> {
   }
 
   void _onChangeDay(ChangeDayEvent event, Emitter<CourseFormState> emit) {
-    event.sectionDay
-        ? emit(state.copyWith(sectionDay: event.newDay))
-        : emit(state.copyWith(day: event.newDay));
+    // event.sectionDay
+    //     ? emit(state.copyWith(sectionDay: event.newDay))
+    //     : emit(state.copyWith(day: event.newDay));
+    switch (event.type) {
+      case "lecture":
+        emit(state.copyWith(day: event.newDay));
+        break;
+      case "section":
+        emit(state.copyWith(sectionDay: event.newDay));
+        break;
+      case "extra":
+        emit(state.copyWith(dayExtra: event.newDay));
+        break;
+    }
+
+
   }
 
   void _onClearTextField(
@@ -60,10 +73,11 @@ class CourseFormBloc extends Bloc<CourseFormEvent, CourseFormState> {
               ? CourseDurationModel(
                   id: event.addFormState.id,
                   course: event.addFormState.lecture.course,
-
                   day: event.addFormState.lecture.section!.day,
                   start: event.addFormState.lecture.section!.start,
                   end: event.addFormState.lecture.section!.end,
+                  extraTime: event.addFormState.lecture.section!.extraTime,
+                  extraTimeDay: event.addFormState.lecture.section!.extraTimeDay,
                   section: null,
                 )
               : null,
@@ -82,6 +96,7 @@ class CourseFormBloc extends Bloc<CourseFormEvent, CourseFormState> {
         end: event.end ?? state.lecture.end,
         sectionStart: event.sectionStart ?? (state.lecture.section != null? state.lecture.section!.start : 0),
         sectionEnd: event.sectionEnd ?? (state.lecture.section != null? state.lecture.section!.end : 0),
+        extra: event.extra ?? (state.lecture.section != null? state.lecture.section!.extraTime : 0)
       ),
     );
   }

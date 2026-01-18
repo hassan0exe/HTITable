@@ -22,7 +22,8 @@ List<TableRow> coustomeRow({
     // Get all courses that have either main lecture OR section on this day
     List<CourseDurationModel> courses = cubit.state.courses.where((element) {
       return element.day == head || 
-             (element.section != null && element.section!.day == head);
+             (element.section != null && element.section!.day == head)
+             || (element.section != null && element.section!.extraTimeDay == head);
     }).toList();
     
     // Calculate dynamic height based on number of courses
@@ -67,6 +68,7 @@ List<TableRow> coustomeRow({
                     style: TextStyle(
                       fontSize: dataFontSize,
                       fontWeight: FontWeight.bold,
+                      color: stackCourses(courses, index + 1, head , lang).contains("\n") ? Colors.red : Colors.black
                     ),
                   ),
                 ),
@@ -126,9 +128,18 @@ String stackCourses(
         courseDuration.section!.end >= currentIndex) {
       String name = courseDuration.section!.course.name;
       if (name.length > 13) name = "${name.substring(0, 10)}...";
-
       items.add("سكشن ${lang.state ?  courseDuration.section!.course.id : name}");
     }
+
+    // Check extra time
+    if (courseDuration.section != null &&
+        courseDuration.section!.extraTimeDay == head &&
+        courseDuration.section!.extraTime == currentIndex) {
+      String name = courseDuration.section!.course.name;
+      if (name.length > 13) name = "${name.substring(0, 10)}...";
+      items.add("سكشن ${lang.state ?  courseDuration.section!.course.id : name}");
+    }
+
   }
   
   return items.join("\n\n");

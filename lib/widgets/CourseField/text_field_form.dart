@@ -10,11 +10,11 @@ class CoustomeTextFormField extends StatelessWidget {
   const CoustomeTextFormField({
     super.key,
     required this.text,
-    required this.endTimeController,
+    required this.timeController,
     required this.bloc,
   });
 
-  final TextEditingController endTimeController;
+  final TextEditingController timeController;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class CoustomeTextFormField extends StatelessWidget {
         border: OutlineInputBorder(),
         prefixIcon: Icon(Icons.access_time),
       ),
-      controller: endTimeController,
+      controller: timeController,
       keyboardType: TextInputType.number,
       inputFormatters: <TextInputFormatter>[
         FilteringTextInputFormatter.digitsOnly,
@@ -46,6 +46,9 @@ class CoustomeTextFormField extends StatelessWidget {
           bloc.add(ChangeTimeEvent(sectionStart: int.parse(value)));
         } else if (text == LocalText.sectionEnd){
           bloc.add(ChangeTimeEvent(sectionEnd: int.parse(value)));
+        }else if(text == LocalText.extra){
+          bloc.add(ChangeTimeEvent(extra: int.parse(value)));
+          
         }
         
       },
