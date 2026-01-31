@@ -54,7 +54,7 @@ void addCourse({
       isArabic: true,
     ).allCoursesList.firstWhere((element) => element.name == courseName);
 
-    print(extraTime);
+    // print(extraTime);
     // Create the course duration with proper end time
     // If endTime is -1 or equals startTime, it's a single slot course
     final fieldedDuration = CourseDurationModel(
@@ -82,7 +82,7 @@ void addCourse({
           : null,
     );
     // Add the course
-    print(fieldedDuration);
+    // print(fieldedDuration);
     cubit.addCourse(fieldedDuration);
 
     // Show success message

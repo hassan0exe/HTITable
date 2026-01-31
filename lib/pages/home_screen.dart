@@ -12,6 +12,7 @@ import 'package:table/widgets/print_button.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
+
   @override
   Widget build(BuildContext context) {
     final CoursesCubit cubit = BlocProvider.of<CoursesCubit>(context);
@@ -28,8 +29,7 @@ class HomeScreen extends StatelessWidget {
               const Text("انشاء الجداول"),
 
               //icon button with circle white background for print
-              PrintButton(cubit: cubit) 
-              
+              PrintButton(cubit: cubit),
             ],
           ),
           backgroundColor: Colors.blueAccent,
